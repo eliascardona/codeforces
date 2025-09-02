@@ -32,17 +32,15 @@ int main() {
     int idx=0, jdx=0;
     int rdx=0;
 
+    int *field_linear_vector = &field[0][0];
+
     // filling of original matrix, the original field
-    for (idx=0; idx < n; idx++)
+    for (idx=0; idx < linear_field_length; idx++)
     {
-        for (jdx=0; jdx < m; jdx++)
-        {
-            int plant_index = (idx * m + jdx) % 3;
-            field[idx][jdx] = plant[plant_index];
-        }
+    	int plant_index = idx % 3;
+	    field_linear_vector[idx] = plant[plant_index];
     }
 
-    int *field_linear_vector = &field[0][0];
 
     if (k > 0)
     {
@@ -70,20 +68,14 @@ int main() {
 	int zeros_count = 0;
 	int zeros_indexes_vector[k];
 	// Colecting the zeros' positions
-    for (idx=0; idx < n; idx++)
+    for (idx=0; idx < linear_field_length; idx++)
     {
-        for (jdx=0; jdx < m; jdx++)
-        {
-			int lineal_index = (idx * m + jdx);
-
-			if (field_linear_vector[lineal_index] == 0)
-			{
-				zeros_indexes_vector[zeros_count] = lineal_index;
-				zeros_count++;
-			}
-        }
+		if (field_linear_vector[idx] == 0) 
+		{
+			zeros_indexes_vector[zeros_count] = idx;
+			zeros_count++;
+		}
     }
-
 
 	printf("\n\n");
     int waste_idx=0;
@@ -99,14 +91,6 @@ int main() {
     	for (waste_idx = wc_current_index; waste_idx < wc_next_index; waste_idx++)
 		{
 			printf("%d  ", waste_idx);
-			if (waste_idx = wc_current_index)
-			{
-				int correctCropPlant = getNextCropPlant(field_linear_vector[waste_idx-1]);
-				field_linear_vector[waste_idx+1] = correctCropPlant;
-			}
-
-			int correctCropPlant = getNextCropPlant(field_linear_vector[waste_idx+1]);
-			field_linear_vector[waste_idx] = correctCropPlant;
 		}
 		printf("\n");
 	}
